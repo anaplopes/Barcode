@@ -1,4 +1,4 @@
-# Aplicação Desktop Barcode
+# Aplicação Web Barcode
 
 <p>Tipo de barcode:</p>
 
