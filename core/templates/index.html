@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Gerador de código</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.codetype.label }} {{ form.codetype() }}
+            
+            {% for error in form.codetype.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.file.label }} {{ form.file() }}
+            
+            {% for error in form.file.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.includetext.label }} {{ form.includetext() }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
