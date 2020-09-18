@@ -1,7 +1,9 @@
+import os
+import zipfile
 import treepoem
 import pandas as pd
 from core.forms import BarcodeForm
-from flask import Blueprint, render_template, request, send_file
+from flask import Blueprint, render_template, request, Response, send_file
 
 
 bp = Blueprint('barcode', __name__, url_prefix='/')
@@ -11,7 +13,7 @@ bp = Blueprint('barcode', __name__, url_prefix='/')
 def index():
     form = BarcodeForm()
     
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' and form.validate_on_submit():
         code = request.form['codetype']
         print(code)
         
@@ -27,8 +29,13 @@ def index():
             cod = str(row["CODIGO"])
             name = str(row["NM_ARQUIVO"])
             image = treepoem.generate_barcode(barcode_type=code, data=cod, options={"includetext": text})
-            image.convert('1')
-            image.save(f'core/uploads/{name}.png')
+            image.convert('1').save(f'core/download/{name}.png')
+            
+        zipf = zipfile.ZipFile('core/kit.zip','w', zipfile.ZIP_DEFLATED)
+        for root, dirs, files in os.walk('core/download/'):
+            for f in files:
+                zipf.write('core/download/'+f)
+        zipf.close()
         
-        return send_file('uploads', mimetype='image/png', as_attachment=True, attachment_filename='kit')
+        return send_file('kit.zip', mimetype = 'application/zip', attachment_filename= 'kit.zip', as_attachment = True)
     return render_template('index.html', form=form)
