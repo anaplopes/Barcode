@@ -18,15 +18,17 @@ def index():
         text = True if request.form['includetext'] == 'y' else False
         print(text)
         
-        f = request.files['file']
-        data = pd.read_csv(f, delimiter=';', encoding='utf-8')
-        print(data)
+        file = request.files['file']
+        data = pd.read_csv(file, delimiter=';', encoding='utf-8')
+        df = pd.DataFrame(data=data, columns= ['CODIGO','NM_ARQUIVO'])
+        print(df)
         
-        cont = 1
-        for row in data:           
-            image = treepoem.generate_barcode(barcode_type=code, data=row, options={"includetext": text})
-            image.convert('1').save(f'core/image/{cont}.png')
-            cont+=1
+        for index, row in df.iterrows():
+            cod = str(row["CODIGO"])
+            name = str(row["NM_ARQUIVO"])
+            image = treepoem.generate_barcode(barcode_type=code, data=cod, options={"includetext": text})
+            image.convert('1')
+            image.save(f'core/uploads/{name}.png')
         
-        return send_file('kit', mimetype='image/png')
+        return send_file('uploads', mimetype='image/png', as_attachment=True, attachment_filename='kit')
     return render_template('index.html', form=form)
