@@ -3,7 +3,7 @@ import zipfile
 import treepoem
 import pandas as pd
 from core.forms import BarcodeForm
-from flask import Blueprint, render_template, request, Response, send_file
+from flask import Blueprint, render_template, request, send_file
 
 
 bp = Blueprint('barcode', __name__, url_prefix='/')
@@ -32,7 +32,7 @@ def index():
         zipf = zipfile.ZipFile('core/kit.zip','w', zipfile.ZIP_DEFLATED)
         for root, dirs, files in os.walk('core/download/'):
             for f in files:
-                zipf.write(f)
+                zipf.write(f'core/download/{f}')
         zipf.close()
         
         return send_file('kit.zip', mimetype = 'application/zip', attachment_filename= 'kit.zip', as_attachment = True)

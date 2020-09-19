@@ -1,24 +1,55 @@
-{% extends "base.html" %}
+{% extends "bootstrap/base.html" %}
+
+{% block html_attribs %} lang="pt-br" {% endblock %}
+
+{% block title %} Welcome to Barcode {% endblock %}
+
+{% block navbar %}
+<div class="container">
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
+        <div class="navbar-header">
+            <span class="navbar-brand"> Gerador de código </span>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block content %}
-    <h1>Gerador de código</h1>
+<div class="container">
     <form action="" method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.codetype.label }} {{ form.codetype() }}
-            
-            {% for error in form.codetype.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.file.label }} {{ form.file() }}
-            
-            {% for error in form.file.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.includetext.label }} {{ form.includetext() }}</p>
-        <p>{{ form.submit() }}</p>
+
+        <div class="row">
+            <div class="form-group col-sm-4">
+                {{ form.codetype.label }} {{ form.codetype(class="form-control form-control-lg") }}
+                    
+                {% for error in form.codetype.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-4">
+                {{ form.file.label }} {{ form.file(class="form-control-file") }}
+                
+                {% for error in form.file.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-4">
+                {{ form.includetext(class="form-check-input") }}
+                {{ form.includetext.label }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-4">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </div>
     </form>
+</div>
 {% endblock %}
