@@ -26,15 +26,13 @@ def index():
         print(df)
         
         for index, row in df.iterrows():
-            cod = str(row["CODIGO"])
-            name = str(row["NM_ARQUIVO"])
-            image = treepoem.generate_barcode(barcode_type=code, data=cod, options={"includetext": text})
-            image.convert('1').save(f'core/download/{name}.png')
+            image = treepoem.generate_barcode(barcode_type=code, data=str(row["CODIGO"]), options={"includetext": text})
+            image.convert('1').save(f'core/download/{str(row["NM_ARQUIVO"])}.png')
             
         zipf = zipfile.ZipFile('core/kit.zip','w', zipfile.ZIP_DEFLATED)
         for root, dirs, files in os.walk('core/download/'):
             for f in files:
-                zipf.write('core/download/'+f)
+                zipf.write(f)
         zipf.close()
         
         return send_file('kit.zip', mimetype = 'application/zip', attachment_filename= 'kit.zip', as_attachment = True)
