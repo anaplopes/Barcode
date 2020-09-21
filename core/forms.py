@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, SubmitField, SelectField
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.validators import DataRequired
+
 
 code_choice = [
     ('', '-- Select --'),
@@ -15,7 +17,7 @@ code_choice = [
 ]
 
 class BarcodeForm(FlaskForm):
-    codetype = SelectField('Code Type', choices=code_choice, validators=[DataRequired()])
-    file = FileField('File', validators=[FileRequired(), FileAllowed(['csv'], 'csv only!')])
-    includetext = BooleanField('Include Text')
-    submit = SubmitField('Generator')
+    file = FileField('Arquivo csv', validators=[FileRequired(), FileAllowed(['csv'], 'csv only!')])
+    codetype = SelectField('Tipo de código', choices=code_choice, validators=[DataRequired()])
+    includetext = SelectField('Incluir Texto', choices=[('s', 'Sim'), ('n', 'Não')], validators=[DataRequired()])
+    submit = SubmitField('Gerar')

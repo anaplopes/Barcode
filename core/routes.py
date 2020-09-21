@@ -1,8 +1,6 @@
-import os
-import zipfile
-import treepoem
-import pandas as pd
+# -*- coding: utf-8 -*-
 from core.forms import BarcodeForm
+from core.services import BarcodeService
 from flask import Blueprint, render_template, request, send_file
 
 
@@ -11,29 +9,17 @@ bp = Blueprint('barcode', __name__, url_prefix='/')
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
-    form = BarcodeForm()
+    form = BarcodeForm(request.form)
+    service = BarcodeService()
+    del_zip = service.deleteZip(filename='core/kit.zip')
+    cls_dir = service.clearDir(dir='code/')
     
     if request.method == 'POST' and form.validate_on_submit():
         code = request.form['codetype']
-        print(code)
-        
-        text = True if request.form['includetext'] == 'y' else False
-        print(text)
-        
+        text = True if request.form['includetext'] == 's' else False
         file = request.files['file']
-        data = pd.read_csv(file, delimiter=';', encoding='utf-8')
-        df = pd.DataFrame(data=data, columns= ['CODIGO','NM_ARQUIVO'])
-        print(df)
-        
-        for index, row in df.iterrows():
-            image = treepoem.generate_barcode(barcode_type=code, data=str(row["CODIGO"]), options={"includetext": text})
-            image.convert('1').save(f'core/download/{str(row["NM_ARQUIVO"])}.png')
-            
-        zipf = zipfile.ZipFile('core/kit.zip','w', zipfile.ZIP_DEFLATED)
-        for root, dirs, files in os.walk('core/download/'):
-            for f in files:
-                zipf.write(f'core/download/{f}')
-        zipf.close()
-        
-        return send_file('kit.zip', mimetype = 'application/zip', attachment_filename= 'kit.zip', as_attachment = True)
+        create_code = service.createImage(file=file, barcode_type=code, includetext=text)
+        create_zip = service.createZipFile(ziplocal='core/kit.zip', dirimage='code/')
+        form.reset()
+        return send_file('kit.zip', mimetype='application/zip', attachment_filename='kit.zip', as_attachment=True)
     return render_template('index.html', form=form)
