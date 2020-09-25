@@ -18,7 +18,7 @@ def index():
         code = request.form['codetype']
         text = True if request.form['includetext'] == 's' else False
         file = request.files['file']
-        create_code = service.createImage(file=file, barcode_type=code, includetext=text)
+        create_code = service.createImage(file=file, barcode_type=code, includetext=text, dirimage='core/code_image/')
         create_zip = service.createZipFile(ziplocal='core/codes.zip', dirimage='core/code_image/')
         return send_file('codes.zip', mimetype='application/zip', attachment_filename='codes.zip', as_attachment=True)
     return render_template('index.html', form=form)

@@ -17,7 +17,7 @@ class BarcodeService():
             for name in files:
                 os.remove(os.path.join(root, name))
 
-    def createImage(self, file, barcode_type, includetext):
+    def createImage(self, file, barcode_type, includetext, dirimage):
         data = pd.read_csv(file, delimiter=';', encoding='utf-8')
         df = pd.DataFrame(data=data, columns= ['CODIGO','NM_ARQUIVO'])
         
@@ -26,7 +26,7 @@ class BarcodeService():
                 barcode_type=barcode_type,
                 data=str(row["CODIGO"]),
                 options={"includetext": includetext})
-            image.convert('1').save(f'code/{str(row["NM_ARQUIVO"])}.png')
+            image.convert('1').save(f'{dirimage}{str(row["NM_ARQUIVO"])}.png')
 
     def createZipFile(self, ziplocal, dirimage):
         zipf = zipfile.ZipFile(ziplocal,'w', zipfile.ZIP_DEFLATED)
