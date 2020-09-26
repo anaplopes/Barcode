@@ -1,51 +1,48 @@
 {% extends "bootstrap/base.html" %}
-
 {% block html_attribs %} lang="pt-br" {% endblock %}
-
 {% block title %} Welcome to Barcode {% endblock %}
+
+{% block head %}
+{{super()}}
+<link rel="icon" type="image/png" href="{{url_for('static', filename='img/favicon.ico')}}" />
+{% endblock %}
 
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/" style="font-size: 25px;">Barcode</a>
+        </div>
+    </div>
+</nav>
 {% endblock %}
 
 {% block content %}
 <body class="">
-    <form class="form-signin" action="" method="POST" enctype="multipart/form-data" id="barcodeform">
-        {{ form.hidden_tag() }}
-
-        <div class="text-center">
-            <img class="mb-4" src="{{url_for('static', filename='img/favicon.ico')}}" alt="" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">Gerador de código</h1>
+    <div class="row">
+        <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+            <h2 class="card-title">Gerar um código</h2>
+            <p class="card-text">Formulário com suporte para gerar um código.</p>
+            <a href="/barcode/one" class="btn btn-primary">Ir para o formulário</a>
+            </div>
         </div>
-        
-        <br>
-        {{ form.file.label }}
-        {{ form.file(class="custom-file-input") }}
-        
-        {% for error in form.file.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-
-        <br>
-        {{ form.codetype.label }}
-        {{ form.codetype(class="form-control custom-select") }}
-        
-        {% for error in form.codetype.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        
-        <br>
-        {{ form.includetext.label }}
-        {{ form.includetext(class="form-control custom-select") }}
-
-        {% for error in form.includetext.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        
-        <hr>
-        {{ form.submit(class="btn btn-lg btn-primary btn-block", onsubmit="submit()") }}
-        <p class="mt-5 mb-3 text-muted text-center">&copy; 2020-2020</p>
-    </form>
+        </div>
+        <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+            <h2 class="card-title">Gerar muitos códigos</h2>
+            <p class="card-text">Formulário com suporte para gerar muitos códigos contidos em um arquivo csv.</p>
+            <a href="/barcode/many" class="btn btn-primary">Ir para o formulário</a>
+            </div>
+        </div>
+        </div>
+    </div>
 </body>
 {% endblock %}

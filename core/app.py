@@ -9,6 +9,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
     Bootstrap(app)
+    app.config['BOOTSTRAP_SERVE_LOCAL'] = True
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'you-will-never-guess')
     
     # blueprint

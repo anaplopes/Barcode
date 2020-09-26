@@ -16,8 +16,16 @@ code_choice = [
     ('ean13', 'Ean 13')
 ]
 
-class BarcodeForm(FlaskForm):
+class ManyBarcodeForm(FlaskForm):
     file = FileField('Arquivo csv', validators=[FileRequired(), FileAllowed(['csv'], 'csv only!')])
     codetype = SelectField('Tipo de código', choices=code_choice, validators=[DataRequired()])
     includetext = SelectField('Incluir Texto', choices=[('s', 'Sim'), ('n', 'Não')], validators=[DataRequired()])
+    submit = SubmitField('Gerar')
+
+
+class OneBarcodeForm(FlaskForm):
+    code = StringField('Código', validators=[DataRequired()])
+    namefile = StringField('Nome do arquivo', validators=[DataRequired()])
+    codetype = SelectField('Tipo de código', choices=code_choice, validators=[DataRequired()])
+    includetext = SelectField('Incluir Texto', choices=[('', '-- Select --'), ('s', 'Sim'), ('n', 'Não')], validators=[DataRequired()])
     submit = SubmitField('Gerar')

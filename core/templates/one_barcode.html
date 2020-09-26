@@ -1,0 +1,71 @@
+{% extends "bootstrap/base.html" %}
+{% block html_attribs %} lang="pt-br" {% endblock %}
+{% block title %} Welcome to Barcode {% endblock %}
+
+{% block head %}
+{{super()}}
+<link rel="icon" type="image/png" href="{{url_for('static', filename='img/favicon.ico')}}" />
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Voltar</a>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<body class="">
+    <form class="form-signin" action="" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="text-center">
+            <img class="mb-4" src="{{url_for('static', filename='img/barcode.png')}}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Gerando um código</h1>
+        </div>
+        
+        <br>
+        {{ form.code.label }}
+        {{ form.code(class="form-control") }}
+        
+        {% for error in form.code.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        <br>
+        {{ form.namefile.label }}
+        {{ form.namefile(class="form-control") }}
+        
+        {% for error in form.namefile.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+
+        <br>
+        {{ form.codetype.label }}
+        {{ form.codetype(class="form-control custom-select") }}
+        
+        {% for error in form.codetype.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        
+        <br>
+        {{ form.includetext.label }}
+        {{ form.includetext(class="form-control custom-select") }}
+
+        {% for error in form.includetext.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        
+        <hr>
+        {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+    </form>
+</body>
+{% endblock %}
